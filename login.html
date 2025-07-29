@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <title>Login - Infinity Cubes</title>
+  <link rel="icon" type="image/png" href="Thumbnail.png">
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <h1>Infinity Cubes</h1>
+    
+    <!-- Login Form -->
+    <div id="loginForm" class="auth-form">
+      <h2>Login</h2>
+      <input type="text" id="loginUsername" placeholder="Username" maxlength="20">
+      <input type="password" id="loginPassword" placeholder="Password">
+      <button onclick="login()">Login</button>
+      <p class="auth-switch">Don't have an account? <a href="#" onclick="showRegister()">Register</a></p>
+      <p class="auth-switch">Or <a href="#" onclick="playAsGuest()">Play as Guest</a></p>
+    </div>
+    
+    <!-- Register Form -->
+    <div id="registerForm" class="auth-form" style="display: none;">
+      <h2>Register</h2>
+      <input type="text" id="registerUsername" placeholder="Username (3-20 characters)" maxlength="20">
+      <input type="password" id="registerPassword" placeholder="Password (6+ characters)">
+      <input type="password" id="confirmPassword" placeholder="Confirm Password">
+      <button onclick="register()">Register</button>
+      <p class="auth-switch">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+    </div>
+    
+    <div id="message" class="message"></div>
+  </div>
+
+  <script>
+    let currentUser = null;
+    let isGuest = false;
+    
+    // Check if user is already logged in
+    window.onload = function() {
+      const savedUser = localStorage.getItem('currentUser');
+      const savedGuest = localStorage.getItem('isGuest');
+      
+      if (savedUser && !savedGuest) {
+        currentUser = savedUser;
+        window.location.href = 'index.html';
+      } else if (savedGuest === 'true') {
+        isGuest = true;
+        window.location.href = 'index.html';
+      }
+    };
+    
+    function showLogin() {
+      document.getElementById('loginForm').style.display = 'block';
+      document.getElementById('registerForm').style.display = 'none';
+      document.getElementById('message').textContent = '';
+    }
+    
+    function showRegister() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('registerForm').style.display = 'block';
+      document.getElementById('message').textContent = '';
+    }
+    
+    async function login() {
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      
+      if (!username || !password) {
+        showMessage('Please enter username and password', 'error');
+        return;
+      }
+      
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          currentUser = username;
+          localStorage.setItem('currentUser', username);
+          localStorage.removeItem('isGuest');
+          window.location.href = 'index.html';
+        } else {
+          showMessage(data.error, 'error');
+        }
+      } catch (error) {
+        showMessage('Server error. Please try again.', 'error');
+      }
+    }
+    
+    async function register() {
+      const username = document.getElementById('registerUsername').value.trim();
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (!username || !password || !confirmPassword) {
+        showMessage('Please fill in all fields', 'error');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showMessage('Passwords do not match', 'error');
+        return;
+      }
+      
+      if (username.length < 3 || username.length > 20) {
+        showMessage('Username must be 3-20 characters', 'error');
+        return;
+      }
+      
+      if (password.length < 6) {
+        showMessage('Password must be at least 6 characters', 'error');
+        return;
+      }
+      
+      try {
+        const response = await fetch('/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          showMessage('Registration successful!', 'success');
+          showLogin();
+        } else {
+          showMessage(data.error, 'error');
+        }
+      } catch (error) {
+        showMessage('Server error. Please try again.', 'error');
+      }
+    }
+    
+    function playAsGuest() {
+      isGuest = true;
+      localStorage.setItem('isGuest', 'true');
+      localStorage.removeItem('currentUser');
+      window.location.href = 'index.html';
+    }
+    
+    function showMessage(text, type) {
+      const messageEl = document.getElementById('message');
+      messageEl.textContent = text;
+      messageEl.className = `message ${type}`;
+    }
+  </script>
+</body>
+</html> 

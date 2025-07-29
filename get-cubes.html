@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="sounds/sound-config.js"></script>
+  <script src="javascript.js" defer></script>
+  <title>Get Cubes - Infinity Cubes</title>
+  <link rel="icon" type="image/png" href="Thumbnail.png">
+</head>
+<body class="get-cubes-page">
+  <button class="backButton" onclick="location.href='index.html'">← Back</button>
+  
+
+  
+  <!-- Points display -->
+  <p class="points" id="points">0</p>
+  
+  <!-- Zone display -->
+  <div class="zone-selector">
+    <div id="zoneDisplay" class="zone-display">
+      <!-- Zone info will be displayed here -->
+    </div>
+    <div class="zone-timer">
+      <span class="timer-label">Next Zone:</span>
+      <span id="zoneTimerDisplay" class="timer-value">5:00</span>
+    </div>
+  </div>
+
+  <!-- Stats display -->
+  <div class="stats-container">
+    <div class="stat">
+      <span class="stat-label">Spawn Rate:</span>
+      <span id="spawnRateDisplay" class="stat-value">100%</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Multiplier:</span>
+      <span id="multiplierDisplay" class="stat-value">1.0x</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Luck:</span>
+      <span id="luckDisplay" class="stat-value">100%</span>
+    </div>
+  </div>
+
+  <!-- Cube spawning area -->
+  <div id="spawnArea" class="spawn-area">
+    <!-- Cubes will spawn here -->
+  </div>
+
+  <!-- Chat system -->
+  <div class="chat-container">
+    <div class="chat-header">
+      <span>Global Chat</span>
+      <button class="chat-toggle" onclick="toggleChat()">−</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <!-- Messages will appear here -->
+    </div>
+    <div class="chat-input-container">
+      <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." maxlength="100">
+      <button class="chat-send" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+
+  <!-- Tooltip for cube info -->
+  <div id="tooltip" class="tooltip"></div>
+</body>
+</html> 

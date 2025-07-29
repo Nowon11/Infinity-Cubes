@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="sounds/sound-config.js"></script>
+  <script src="javascript.js" defer></script>
+  <title>Infinity Cubes</title>
+  <link rel="icon" type="image/png" href="Thumbnail.png">
+</head>
+<body>
+  <button class="changeLogButton" onclick="location.href='change-log.html'">Change Log</button>
+  <button class="reset" onclick="reset()">Hard Reset</button>
+  <button class="getCubesButton" onclick="location.href='get-cubes.html'">Get Cubes</button>
+  <button class="indexButton" onclick="location.href='cube-index.html'">Cube Index</button>
+  <button class="settingsButton" onclick="location.href='settings.html'">Settings</button>
+
+  <!-- Points display -->
+  <p class="points" id="points">0</p>
+  
+  <!-- Inventory title -->
+  <h1 class="inventory-title">Cube Collection</h1>
+
+  <!-- The inventory container -->
+  <div id="inventoryContainer" class="inventory-container">
+    <!-- Cubes will be placed here -->
+  </div>
+
+  <!-- Tabbed upgrades -->
+  <div class="upgrades-container">
+    <div class="tab-buttons">
+      <button class="tab-button active" onclick="switchTab('luck')">Luck</button>
+      <button class="tab-button" onclick="switchTab('spawn')">Spawn Rate</button>
+      <button class="tab-button" onclick="switchTab('rebirth')">Rebirth</button>
+    </div>
+    
+    <div class="tab-content">
+      <!-- Luck upgrades -->
+      <div id="luck-tab" class="tab-panel active">
+        <h3>Luck Upgrades</h3>
+        <button id="luck-upgrade-btn" class="luck-upgrade" onclick="buyUpgrade('luck')">Buy Luck</button>
+      </div>
+      
+      <!-- Spawn rate upgrades -->
+      <div id="spawn-tab" class="tab-panel">
+        <h3>Spawn Rate Upgrades</h3>
+        <button id="spawn-upgrade-btn" class="spawn-upgrade" onclick="buyUpgrade('spawn')">Buy Spawn Rate</button>
+      </div>
+      
+      <!-- Rebirth upgrades -->
+      <div id="rebirth-tab" class="tab-panel">
+        <h3>Rebirth</h3>
+        <button class="rebirth-button" onclick="rebirth()">Rebirth (Cost: All cubes + 100k points)</button>
+        <p class="rebirth-info">Current Multiplier: <span id="rebirthMulti">1.0</span>x</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tooltip for cube info -->
+  <div id="tooltip" class="tooltip"></div>
+</body>
+</html>
