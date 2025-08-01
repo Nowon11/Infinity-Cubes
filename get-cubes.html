@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/OutlinePass.js"></script>
+  <script src="three-engine.js" defer></script>
+  <script src="sounds/sound-config.js"></script>
+  <script src="javascript.js" defer></script>
+  <title>Get Cubes - Infinity Cubes</title>
+  <link rel="icon" type="image/png" href="Thumbnail.png">
+</head>
+<body class="get-cubes-page">
+  <button class="menu-button" onclick="goBack()">×</button>
+  
+  <!-- Points display -->
+  <p class="points" id="points">0</p>
+  
+  <!-- Zone display -->
+  <div class="zone-selector">
+    <div id="zoneDisplay" class="zone-display">
+      <!-- Zone info will be displayed here -->
+    </div>
+    <div class="zone-timer">
+      <span class="timer-label">Next Zone:</span>
+      <span id="zoneTimerDisplay" class="timer-value">5:00</span>
+    </div>
+  </div>
+
+  <!-- Stats display -->
+  <div class="stats-container">
+    <div class="stat">
+      <span class="stat-label">Spawn Rate:</span>
+      <span id="spawnRateDisplay" class="stat-value">100%</span>
+      <span class="stat-level">(Level <span id="spawnLevelDisplay">0</span>)</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Multiplier:</span>
+      <span id="multiplierDisplay" class="stat-value">1.0x</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Luck:</span>
+      <span id="luckDisplay" class="stat-value">100%</span>
+      <span class="stat-level">(Level <span id="luckLevelDisplay">0</span>)</span>
+    </div>
+  </div>
+
+  <!-- Cube spawning area -->
+  <div id="spawnArea" class="spawn-area">
+    <!-- Cubes will spawn here -->
+  </div>
+
+  <!-- Chat system -->
+  <div class="chat-container">
+    <div class="chat-header">
+      <span>Chat</span>
+      <button class="chat-toggle" onclick="toggleChat()">−</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <!-- Messages will appear here -->
+    </div>
+    <div class="chat-input-container">
+      <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." maxlength="100">
+      <button class="chat-send" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+
+  <!-- Tooltip for cube info -->
+  <div id="tooltip" class="tooltip"></div>
+
+  <!-- Admin Panel -->
+  <div id="adminPanel" class="admin-panel">
+    <div class="admin-header">
+      <h3>Admin Panel</h3>
+      <button class="admin-close" onclick="toggleAdminPanel()">×</button>
+    </div>
+    <div class="admin-content">
+      <div class="admin-section">
+        <h4>Cube Management</h4>
+        <button onclick="adminSpawnCube()">Spawn Cube</button>
+        <button onclick="adminClearInventory()">Clear Inventory</button>
+        <button onclick="adminGivePoints()">Give Points</button>
+      </div>
+      <div class="admin-section">
+        <h4>Zone Management</h4>
+        <select id="adminZoneSelect">
+          <option value="Overworld">Overworld</option>
+          <option value="Cave">Cave</option>
+          <option value="Volcano">Volcano</option>
+          <option value="Space">Space</option>
+        </select>
+        <button onclick="adminSetZone()">Set Zone</button>
+        <button onclick="adminResetZoneTimer()">Reset Zone Timer</button>
+      </div>
+      <div class="admin-section">
+        <h4>Chat Management</h4>
+        <button onclick="adminClearChat()">Clear Chat</button>
+        <button onclick="adminSendMessage()">Send Message</button>
+        <input type="text" id="adminMessage" placeholder="Admin message...">
+      </div>
+      <div class="admin-section">
+        <h4>Player Management</h4>
+        <button onclick="adminResetPlayer()">Reset Player</button>
+        <button onclick="adminMaxUpgrades()">Max Upgrades</button>
+        <button onclick="adminSetSpawnRate()">Set Spawn Rate</button>
+        <button onclick="adminDebugSpawn()">Debug Spawn</button>
+        <button onclick="adminGivePointsToPlayer()">Give Points to Player</button>
+        <button onclick="adminSetPointsForPlayer()">Set Points for Player</button>
+        <button onclick="spawnRandomGlobalCube()">Spawn Global Cube</button>
+        <button onclick="adminDeleteAccount()" class="delete-btn">Delete Account</button>
+        <button onclick="adminStartDiamondStorm()">Start Diamond Storm</button>
+        <button onclick="adminGiveDiamonds()">Give Diamonds</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="three-container"></div>
+
+</body>
+</html> 

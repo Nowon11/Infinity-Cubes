@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/OutlinePass.js"></script>
+  <script src="three-engine.js" defer></script>
+  <script src="sounds/sound-config.js"></script>
+  <script src="javascript.js" defer></script>
+  <title>Infinity Cubes</title>
+  <link rel="icon" type="image/png" href="Thumbnail.png">
+</head>
+<body>
+  <button class="menu-button" onclick="toggleSidebar()">☰</button>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <button class="close-button" onclick="toggleSidebar()">×</button>
+    <nav class="sidebar-nav">
+      <a href="get-cubes.html">Get Cubes</a>
+      <a href="index.html">Cube Collection</a>
+      <a href="cube-index.html">Cube Index</a>
+      <a href="crafting.html">Crafting</a>
+      <a href="workers.html">Workers</a>
+      <a href="settings.html">Settings</a>
+      <button id="deleteModeBtn" onclick="toggleDeleteMode()" class="delete-mode-btn">Enable Delete Mode</button>
+    </nav>
+    
+    <!-- Tabbed upgrades -->
+    <div class="upgrades-container">
+      <div class="tab-buttons">
+        <button class="tab-button active" onclick="switchTab('luck')">Luck</button>
+        <button class="tab-button" onclick="switchTab('spawn')">Spawn Rate</button>
+        <button class="tab-button" onclick="switchTab('rebirth')">Rebirth</button>
+      </div>
+      
+      <div class="tab-content">
+        <!-- Luck upgrades -->
+        <div id="luck-tab" class="tab-panel active">
+          <h3>Luck Upgrades</h3>
+          <button id="luck-upgrade-btn" class="luck-upgrade" onclick="buyUpgrade('luck')">Buy Luck</button>
+        </div>
+        
+        <!-- Spawn rate upgrades -->
+        <div id="spawn-tab" class="tab-panel">
+          <h3>Spawn Rate Upgrades</h3>
+          <button id="spawn-upgrade-btn" class="spawn-upgrade" onclick="buyUpgrade('spawn')">Buy Spawn Rate</button>
+        </div>
+        
+        <!-- Rebirth upgrades -->
+        <div id="rebirth-tab" class="tab-panel">
+          <h3>Multiplier</h3>
+          <button class="rebirth-button" onclick="rebirth()">Buy Multiplier</button>
+          <p class="rebirth-info">Current Multiplier: <span id="rebirthMulti">1.0</span>x</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inventory title -->
+  <h1 class="inventory-title">Cube Collection</h1>
+  
+  <!-- Points display -->
+  <p class="points" id="points">0</p>
+  
+  <!-- Stats display -->
+  <div class="stats-container">
+    <div class="stat">
+      <span class="stat-label">Spawn Rate:</span>
+      <span id="spawnRateDisplay" class="stat-value">100%</span>
+      <span class="stat-level">(Level <span id="spawnLevelDisplay">0</span>)</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Multiplier:</span>
+      <span id="multiplierDisplay" class="stat-value">1.0x</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Luck:</span>
+      <span id="luckDisplay" class="stat-value">100%</span>
+      <span class="stat-level">(Level <span id="luckLevelDisplay">0</span>)</span>
+    </div>
+  </div>
+
+  <!-- The inventory container -->
+  <div id="inventoryContainer" class="inventory-container">
+    <!-- Cubes will be placed here -->
+  </div>
+
+  <!-- Tooltip for cube info -->
+  <div id="tooltip" class="tooltip"></div>
+
+  <!-- Admin Panel -->
+  <div id="adminPanel" class="admin-panel">
+    <div class="admin-header">
+      <h3>Admin Panel</h3>
+      <button class="admin-close" onclick="toggleAdminPanel()">×</button>
+    </div>
+    <div class="admin-content">
+      <div class="admin-section">
+        <h4>Cube Management</h4>
+        <button onclick="adminSpawnCube()">Spawn Cube</button>
+        <button onclick="adminClearInventory()">Clear Inventory</button>
+        <button onclick="adminGivePoints()">Give Points</button>
+      </div>
+      <div class="admin-section">
+        <h4>Zone Management</h4>
+        <select id="adminZoneSelect">
+          <option value="Overworld">Overworld</option>
+          <option value="Cave">Cave</option>
+          <option value="Volcano">Volcano</option>
+          <option value="Space">Space</option>
+        </select>
+        <button onclick="adminSetZone()">Set Zone</button>
+        <button onclick="adminResetZoneTimer()">Reset Zone Timer</button>
+      </div>
+      <div class="admin-section">
+        <h4>Chat Management</h4>
+        <button onclick="adminClearChat()">Clear Chat</button>
+        <button onclick="adminSendMessage()">Send Message</button>
+        <input type="text" id="adminMessage" placeholder="Admin message...">
+      </div>
+      <div class="admin-section">
+        <h4>Player Management</h4>
+        <button onclick="adminResetPlayer()">Reset Player</button>
+        <button onclick="adminMaxUpgrades()">Max Upgrades</button>
+        <button onclick="adminSetSpawnRate()">Set Spawn Rate</button>
+        <button onclick="adminDebugSpawn()">Debug Spawn</button>
+        <button onclick="adminGivePointsToPlayer()">Give Points to Player</button>
+        <button onclick="adminSetPointsForPlayer()">Set Points for Player</button>
+        <button onclick="spawnRandomGlobalCube()">Spawn Global Cube</button>
+        <button onclick="adminDeleteAccount()" class="delete-btn">Delete Account</button>
+        <button onclick="adminStartDiamondStorm()">Start Diamond Storm</button>
+        <button onclick="adminGiveDiamonds()">Give Diamonds</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="three-container"></div>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="javascript.js" defer></script>
+  <title>Workers - Infinity Cubes</title>
+  <link rel="icon" type="image/png" href="Thumbnail.png">
+</head>
+<body class="workers-page">
+  <button class="menu-button" onclick="goBack()">×</button>
+  
+  <header>
+    <h1>Workers</h1>
+    <p class="diamonds" id="diamonds">Diamonds: 0</p>
+  </header>
+
+  <!-- Tabbed content -->
+  <div class="workers-container">
+    <div class="workers-tab-buttons">
+      <button class="workers-tab-button active" onclick="switchWorkersTab('crates')">Crates</button>
+      <button class="workers-tab-button" onclick="switchWorkersTab('index')">Worker Index</button>
+      <button class="workers-tab-button" onclick="switchWorkersTab('inventory')">Worker Inventory</button>
+    </div>
+    
+    <div class="workers-content">
+      <!-- Crates Tab -->
+      <div id="crates-tab" class="workers-tab-panel active">
+        <h2>Worker Crates</h2>
+        <div id="cratesContainer" class="crates-grid">
+          <!-- Worker crates will be displayed here -->
+        </div>
+      </div>
+      
+      <!-- Worker Index Tab -->
+      <div id="index-tab" class="workers-tab-panel">
+        <h2>Worker Index</h2>
+        <div id="workerIndexContainer" class="worker-index-grid">
+          <!-- Worker index will be displayed here -->
+        </div>
+      </div>
+      
+      <!-- Worker Inventory Tab -->
+      <div id="inventory-tab" class="workers-tab-panel">
+        <h2>Worker Inventory</h2>
+        <div class="worker-inventory-container">
+          <div class="worker-slots">
+            <h3>Active Workers (4 slots)</h3>
+            <div class="slots-grid">
+              <div class="worker-slot" data-slot="0" ondrop="dropWorker(event)" ondragover="allowDrop(event)">
+                <div class="slot-label">Slot 1</div>
+                <div class="slot-content" id="slot-0"></div>
+              </div>
+              <div class="worker-slot" data-slot="1" ondrop="dropWorker(event)" ondragover="allowDrop(event)">
+                <div class="slot-label">Slot 2</div>
+                <div class="slot-content" id="slot-1"></div>
+              </div>
+              <div class="worker-slot" data-slot="2" ondrop="dropWorker(event)" ondragover="allowDrop(event)">
+                <div class="slot-label">Slot 3</div>
+                <div class="slot-content" id="slot-2"></div>
+              </div>
+              <div class="worker-slot" data-slot="3" ondrop="dropWorker(event)" ondragover="allowDrop(event)">
+                <div class="slot-label">Slot 4</div>
+                <div class="slot-content" id="slot-3"></div>
+              </div>
+            </div>
+          </div>
+          <div class="worker-collection">
+            <h3>Your Workers</h3>
+            <div id="workerCollectionContainer" class="worker-collection-grid">
+              <!-- Worker collection will be displayed here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Crate Opening Modal -->
+  <div id="crateModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeCrateModal()">&times;</span>
+      <div id="crateModalContent">
+        <!-- Crate opening result will be shown here -->
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

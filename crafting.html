@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="sounds/sound-config.js"></script>
+  <script src="javascript.js" defer></script>
+  <title>Crafting - Infinity Cubes</title>
+  <link rel="icon" type="image/png" href="Thumbnail.png">
+</head>
+<body class="crafting-page">
+  <button class="menu-button" onclick="goBack()">×</button>
+  
+  <header>
+    <h1>Crafting</h1>
+  </header>
+
+  <!-- Tabbed content -->
+  <div class="crafting-container">
+    <div class="crafting-tab-buttons">
+      <button class="crafting-tab-button active" onclick="switchCraftingTab('recipes')">Recipes</button>
+      <button class="crafting-tab-button" onclick="switchCraftingTab('inventory')">Inventory</button>
+    </div>
+    
+    <div class="crafting-content">
+      <!-- Recipes Tab -->
+      <div id="recipes-tab" class="crafting-tab-panel active">
+        <h2>Available Recipes</h2>
+        <div id="recipesContainer" class="recipes-grid">
+          <!-- Recipes will be displayed here -->
+        </div>
+      </div>
+      
+      <!-- Inventory Tab -->
+      <div id="inventory-tab" class="crafting-tab-panel">
+        <h2>Crafted Items</h2>
+        <div id="craftedItemsContainer" class="crafted-items-grid">
+          <!-- Crafted items will be displayed here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Item Details Modal -->
+  <div id="itemModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeItemModal()">&times;</span>
+      <div id="itemModalContent">
+        <!-- Item details will be displayed here -->
+      </div>
+    </div>
+  </div>
+
+</body>
+</html> 
